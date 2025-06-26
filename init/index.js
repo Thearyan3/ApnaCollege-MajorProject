@@ -1,3 +1,5 @@
+//Sab kuch krne ke baad index.js kuki ek js file h to phle ise execute krna hoga terminal me node index.js likh kr.
+//Uske baad hi iske andar ka sara data database me insert ho payega. Matlab data tabhi initialize hoga. 
 //7th step - IInd step for 7th step -> Phle data.js se saare exported hue data ko require krenge.
 const initData = require("./data.js");//Aise 
 const mongoose = require("mongoose");//Ab mongoose ko bhi require krenge aur baad me connect krenge index.js se.
