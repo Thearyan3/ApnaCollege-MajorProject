@@ -9,8 +9,14 @@
     <h3>All Listings</h3>
     <ul>
         <% for(let listing of allListings){ %>
-            <li><a href="/listings/<%= listing._id%>"><%= listing.title %></a></li>
+            <li><a href="/listings/<%= listing._id%>"><%= listing.title %></a></li>// ye "/listings/:id" show route ke liye h, jisme 
+            hamne sari listing titles ko ek link me convert kr diya h aur href me show route de diya jisse is link par click krte hi
+            user isi route par phuch jayega jisme ham ek specific listing ke data ko view kr payenge. //  
         <%}%>
     </ul>
 </body>
 </html>
+
+//ejs file ka matlab hota h html ko static se dynamic banana. ejs file se ham apne Javascript ke poore code ko (embedd-dusri cheez ke andar 
+kisi value ko add krdena) kr skte h aur jise ham interpolation syntax bhi khte h. Isi syntax ko achieve krne ke liye ham ejs tags (<%=, %>, <%-), 
+// ka use krte h.
