@@ -140,7 +140,10 @@ app.put("/listings/:id", async (req, res) =>{
     res.redirect(`/listings/${id}`);
 });
 
-//Delete Route - 14th step -
+//Delete Route - 14th step - project1 (part-a) ke last part me ye delete route banega aur isko banane ke liye show.ejs file me ek delete button
+//create hoga jo ek form ke andar hoga aur form ke andar post method ko ham convert krenge delete me with the help of method-override.
+//Ab jaise hi user "/listings/:id" route pe aayega to use ek delete button milega aur jaise hi vo uspe click krega to vo specific id wala
+//data ya listing database aur route se delete ho jayegi.
 app.delete("/listings/:id", async (req, res) => {
     let {id} = req.params;
     const deletedListing = await Listing.findByIdAndDelete(id);
