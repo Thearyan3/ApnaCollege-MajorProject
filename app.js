@@ -50,7 +50,7 @@ app.set("views", path.join(__dirname, "views"));//is line ka matlab h ki ham vie
 //"backend/ejsdir/views". Aur isi joined path se ham app ko bta rhe h ki views ko vha mat search krna jha se server run hua h. 
 //Usko hamesha is joined path pe jaakar search krna. 
 app.use(express.urlencoded({extended: true}));// requested Data ko parse krne ke liye.(Show Route ka part h ye)
-app.use(methodOverride("method"));
+app.use(methodOverride("_method"));
 
 // app.get("/testListing", async (req, res) => { //6th step - Ab Wanderlust Database mongoDB ke andar create ho chuka h
 //to lekin iske andar jo listings naam ki collection/model hamne listing.js me allListing Schema ki help se banayi h,
@@ -146,7 +146,7 @@ app.delete("/listings/:id", async (req, res) => {
     const deletedListing = await Listing.findByIdAndDelete(id);
     console.log(deletedListing);
     res.redirect("/listings");
-})
+});
 
 app.get("/", (req, res) => {
     res.send("Hi, I am root");// 3rd step [get request ke liye "/" route banayenge aur uspe response send krenge 
