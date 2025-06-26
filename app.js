@@ -1,10 +1,12 @@
 //Important** - 7th step init folder ke andar h.** 
-const express = require("express");// 1st Step
+const express = require("express");// 1st Step - express package ko require krenge
 const app = express();// 1st Step
 const mongoose = require("mongoose");// 4th step
 const Listing = require("./models/listing.js");// 5th step to create Schema and model and then export
 //them to app.js by (module.exports) [for 5th step's more information, Go to models/listing.js]
-const path = require("path");
+const path = require("path");//8th step - ye phli line hoti h [app.set("views", path.join(__dirname, "views"))] ke liye.
+// path ek package h jisko require krna hota h views ko path dikhane ke liye.
+//Aur ejs package ko require krne ki zrurat nhi hoti kuki usko express package ne automaically, internally require kr liya h.  
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";// 4th step[IIIrd step for 4th step- ye bas ek URL h, jo
 // mongoose.connect me likhna hota h ye batane ke liye ki kisko kisse connect krna h. Yaha pe hamne isko ek variable
@@ -33,8 +35,19 @@ async function main(){
 //run krna band nhi hoga.]
 }
 
-app.set("views engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
+//Jab bhi ham express package ke andar views engine ko use krte h, iska matlab hota h ki saare ejs template ek views naame
+//ke folder ke andar hone chahiye. Kuki express views naam ke folder ko hi dhudenga render krne ke liye. 
+app.set("views engine", "ejs");//8th step - IInd step - "views engine" ko "ejs" set krenge, app.set ki help se.
+//views ka matlab ham template samajh skte h matlab ek aise package jo hamare views ko create, render ya show krne ke 
+//kaam aayega usko ham ejs pe set krdenge. 
+//render ka matlab hota h file ko send krna aur res.render() me ham sirf ejs file ko hi send krenge. 
+app.set("views", path.join(__dirname, "views"));//is line ka matlab h ki ham views naam ke folder ka path set krne 
+// ki koshish kr rhe h. Path dikhane ke liye hamne ek function use kiya h (path.join). Path package ke andar ek path
+//naam ka method hota jo 2 paths ko join krne ke kaam aata h. Aur isme phla path hamne liya h "__dirname". "__dirname"
+//index.js ki ek current working directory h. Aur index.js ki current working directory h -> backend/ejsdir. Matlab
+//__dirname me "backend/ejsdir" path likha hua h aur isko hamne aage, "views" se join kr diya to views ka correct path ho gya 
+//"backend/ejsdir/views". Aur isi joined path se ham app ko bta rhe h ki views ko vha mat search krna jha se server run hua h. 
+//Usko hamesha is joined path pe jaakar search krna. 
 
 // app.get("/testListing", async (req, res) => { //6th step - Ab Wanderlust Database mongoDB ke andar create ho chuka h
 //to lekin iske andar jo listings naam ki collection/model hamne listing.js me allListing Schema ki help se banayi h,
@@ -63,9 +76,15 @@ app.set("views", path.join(__dirname, "views"));
 // });
 //Last me isko comment out kr denge kuki ye route hamne bas database ko check krne ke liye banaya tha. 
 
+
+//Index Route
 app.get("/listings", async (req, res) => {
     const allListings = await Listing.find({});
-    res.render("listings/index.ejs", {allListings});
+    res.render("listings/index.ejs", {allListings});//8th step - IInd step - "/listings" naam ka route, database ki saare data tak phuchne 
+    //ke liye. Isme hamne Listing.find({}) method use kiya aur empty condition pass ki h. Is method se sara data find hoke store ho jayega
+    //allListings naam ke variable me. Ab ham response me render kr denge "index.ejs" ko jo listings folder ke andar h isliye ham 
+    //"listings/index.ejs" likhenge aur index.ejs ke andar ham pass krdenge apne saare listings ko {allListings} ki help se. 
+    //Aur ab listings folder ke andar index.ejs ko prepare krenge to next step vhi pe milega. 
 });
 
 app.get("/", (req, res) => {
