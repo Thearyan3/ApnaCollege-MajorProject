@@ -54,6 +54,7 @@ app.use(express.urlencoded({extended: true}));// requested Data ko parse krne ke
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);//15th step - yha pe ejs ke liye engine define kiya ja rha h, jo hoga ejsMate.
 //16th step - To create a layouts folder inside views folder. For more info go to layouts folder.
+app.use(express.static(path.join(__dirname, "/public")));//to use static files like CSS.
 
 // app.get("/testListing", async (req, res) => { //6th step - Ab Wanderlust Database mongoDB ke andar create ho chuka h
 //to lekin iske andar jo listings naam ki collection/model hamne listing.js me allListing Schema ki help se banayi h,
