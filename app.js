@@ -8,6 +8,7 @@ const path = require("path");//8th step - ye phli line hoti h [app.set("views", 
 // path ek package h jisko require krna hota h views ko path dikhane ke liye.
 //Aur ejs package ko require krne ki zrurat nhi hoti kuki usko express package ne automaically, internally require kr liya h. 
 const methodOverride = require("method-override"); 
+const ejsMate = require("ejs-mate");//15th step - Helps to create common templates or layout like Navbars, footers etc.
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";// 4th step[IIIrd step for 4th step- ye bas ek URL h, jo
 // mongoose.connect me likhna hota h ye batane ke liye ki kisko kisse connect krna h. Yaha pe hamne isko ek variable
@@ -51,6 +52,8 @@ app.set("views", path.join(__dirname, "views"));//is line ka matlab h ki ham vie
 //Usko hamesha is joined path pe jaakar search krna. 
 app.use(express.urlencoded({extended: true}));// requested Data ko parse krne ke liye.(Show Route ka part h ye)
 app.use(methodOverride("_method"));
+app.engine("ejs", ejsMate);//15th step - yha pe ejs ke liye engine define kiya ja rha h, jo hoga ejsMate.
+//16th step - To create a layouts folder inside views folder. For more info go to layouts folder.
 
 // app.get("/testListing", async (req, res) => { //6th step - Ab Wanderlust Database mongoDB ke andar create ho chuka h
 //to lekin iske andar jo listings naam ki collection/model hamne listing.js me allListing Schema ki help se banayi h,
