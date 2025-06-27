@@ -1,0 +1,20 @@
+** Isse phle hamne sara website ka basic part jaise express, mongoose, ejs ko require kr liya h aur CRUD operations
+bhi create kr diye h. Website ka basic structure prepare ho chuka h. Ab next part isko style dena hoga jiske steps 
+neeche diye gaye h. 
+
+1. Boilerplate.ejs ke steps: 
+(i). create html Boilerplate.
+(ii). create a div with classname container and store body inside it with ejs-Mate.
+(iii). use <%- layout("/layouts/boilerplate") %> at the top of index.ejs and show.ejs, taki jo kaam bhi ham 
+boilerplate.ejs me kare vo sara in dono files me bhi apply ho jaye jaise CSS and Javascript.
+(iv). Create a public folder and css folder and then create style.css inside that folder and to use these kinds of 
+static files in app.js, you have to use a line {app.use(express.static(path.join(__dirname, "/public)));}
+(v) link style.css with boilerplate.ejs just like we used to did in html file. 
+(vi). connect bootstrap to boilerplate.ejs by copying the (includes CSS and Javascript section of Quick Start) in 
+Bootstrap. 
+
+2. Navbar ke steps:
+(i). Create includes folder inside views folder - ham navbar ko alag se create isliye kr rhe h kuki code ke andar 
+modularity honi chahiye matlab chote-chote hisso me likhna ek achi coding practice mani jati h aur iski vjah se agar 
+hame baad me navbar, footer jaise sections me kuch change ya adjust krna h to hame sara kaam ek hi file me na 
+karke, navbar jaisi alag file me krenge.
