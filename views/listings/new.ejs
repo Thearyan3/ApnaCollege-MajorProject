@@ -1,10 +1,12 @@
 <% layout("/layouts/boilerplate") %>
-<body>
+<div class="row">
+    <div class="col-8 offset-2">
+        <br><br>
     <h3>Create New Listing</h3>
     <form method="POST" action="/listings">
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-        <input name="listing[title]" placeholder="enter title" class="form-control" type="text">
+        <input name="listing[title]" placeholder="Add a catchy title" class="form-control" type="text">
         </div>
     
         <div class="mb-3">
@@ -17,21 +19,23 @@
         <input name="listing[image]" placeholder="enter image" class="form-control" type="text">
         </div>
     
-        <div class="mb-3">
-        <label for="price" class="form-label">Price</label>
-        <input name="listing[price]" placeholder="enter price" class="form-control" type="number">
+        <div class="row">
+            <div class="mb-3 col-md-4">
+                <label for="price" class="form-label">Price</label>
+                <input name="listing[price]" placeholder="1200" class="form-control" type="number">
+            </div>
+            <div class="mb-3 col-md-8">
+                <label for="country" class="form-label">Country</label>
+                <input name="listing[country]" placeholder="India" class="form-control" type="text">
+            </div>
         </div>
     
         <div class="mb-3">
         <label for="location" class="form-label">Location</label>
-        <input name="listing[location]" placeholder="enter location" class="form-control" type="text">
-        </div>
-    
-        <div class="mb-3">
-        <label for="country" class="form-label">Country</label>
-        <input name="listing[country]" placeholder="enter country" class="form-control" type="text">
+        <input name="listing[location]" placeholder="Jaipur, Rajasthan" class="form-control" type="text">
         </div>
     
         <button class="btn btn-dark">Add</button>
     </form>
-</body>
+    </div>
+</div>
