@@ -1,20 +1,31 @@
 <% layout("/layouts/boilerplate") %>
-<body>
-    <h3>All Listings</h3>
-    <!-- <form method="GET" action="/listings/new">
-        <button>Create New Listing</button>
-    </form> -->
-    <ul>
-        <% for(let listing of allListings){ %>
-            <li><a href="/listings/<%= listing._id%>"><%= listing.title %></a></li> 
-        <%}%>
-    </ul>
-</body>
+
+    <body>
+        <h3>All Listings</h3>
+
+        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+            <% for(let listing of allListings){ %>
+                <div class="card col" style="width: 20rem;">
+                    <img src="<%=listing.image%>" class="card-img-top" alt="listing_image">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <%= listing.title %> <br>
+                                &#8377;<%=listing.price.toLocaleString("en-IN") %> /night
+                        </p>
+                    </div>
+                </div>
+                <%}%>
+        </div>
+    </body>
 
 
-//ejs file ka matlab hota h html ko static se dynamic banana. ejs file se ham apne Javascript ke poore code ko (embedd-dusri cheez ke andar 
-kisi value ko add krdena) kr skte h aur jise ham interpolation syntax bhi khte h. Isi syntax ko achieve krne ke liye ham ejs tags, 
-// ka use krte h.
+    //ejs file ka matlab hota h html ko static se dynamic banana. ejs file se ham apne Javascript ke poore code ko
+    (embedd-dusri cheez ke andar
+    kisi value ko add krdena) kr skte h aur jise ham interpolation syntax bhi khte h. Isi syntax ko achieve krne ke liye
+    ham ejs tags,
+    // ka use krte h.
 
-// ye "/listings/:id" show route ke liye h, jisme hamne sari listing titles ko ek link me convert kr diya h aur href me show route de diya jisse 
-is link par click krte hi user isi route par phuch jayega jisme ham ek specific listing ke data ko view kr payenge. // 
+    // ye "/listings/:id" show route ke liye h, jisme hamne sari listing titles ko ek link me convert kr diya h aur href
+    me show route de diya jisse
+    is link par click krte hi user isi route par phuch jayega jisme ham ek specific listing ke data ko view kr payenge.
+    //
