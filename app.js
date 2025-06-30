@@ -41,7 +41,7 @@ async function main(){
 
 //Jab bhi ham express package ke andar views engine ko use krte h, iska matlab hota h ki saare ejs template ek views naame
 //ke folder ke andar hone chahiye. Kuki express views naam ke folder ko hi dhudenga render krne ke liye. 
-app.set("views engine", "ejs");//8th step - IInd step - "views engine" ko "ejs" set krenge, app.set ki help se.
+app.set("view engine", "ejs");//8th step - IInd step - "views engine" ko "ejs" set krenge, app.set ki help se.
 //views ka matlab ham template samajh skte h matlab ek aise package jo hamare views ko create, render ya show krne ke 
 //kaam aayega usko ham ejs pe set krdenge. 
 //render ka matlab hota h file ko send krna aur res.render() me ham sirf ejs file ko hi send krenge. 
