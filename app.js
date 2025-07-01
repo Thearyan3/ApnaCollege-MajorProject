@@ -157,19 +157,20 @@ app.delete("/listings/:id", wrapAsync(async (req, res) => {
     res.redirect("/listings");
 }));
 
+app.get("/", (req, res) => {
+    res.send("Hi, I am root");// 3rd step [get request ke liye "/" route banayenge aur uspe response send krenge 
+    // (res.send) ke help se aur check krenge ki hamara route work kr rha h ya nhi]
+})
+
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found!"));
 });
 
 app.use((err, req, res, next) => {
     let {statusCode = 500, message = "Something went Wrong"} = err;
-    res.status(statusCode).send(message);
+    res.render("error.ejs");
+    // res.status(statusCode).send(message);
 });
-
-app.get("/", (req, res) => {
-    res.send("Hi, I am root");// 3rd step [get request ke liye "/" route banayenge aur uspe response send krenge 
-    // (res.send) ke help se aur check krenge ki hamara route work kr rha h ya nhi]
-})
 
 app.listen(8080, () => {
     console.log("Server is listening to port 8080"); // 2nd step [Server ready krenge aur port no. denge (8080)]
