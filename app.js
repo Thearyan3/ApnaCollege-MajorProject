@@ -11,6 +11,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");//15th step - Helps to create common templates or layout like Navbars, footers etc.
 // const wrapAsync = require("./utils/wrapAsync.js");
 // const ExpressError = require("./utils/ExpressError.js");
+const {listingSchema} = require("./schema.js");
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";// 4th step[IIIrd step for 4th step- ye bas ek URL h, jo
 // mongoose.connect me likhna hota h ye batane ke liye ki kisko kisse connect krna h. Yaha pe hamne isko ek variable
