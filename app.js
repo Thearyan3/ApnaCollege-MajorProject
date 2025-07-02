@@ -119,6 +119,8 @@ app.get("/listings/:id", async (req, res) => {// Ye ek async function hoga jisme
 
 //Create Route - 11th step - new.ejs ke andar wale add button pe click krte hi jis route pr phuchna h vo route yehi h yani create route. 
 app.post("/listings",async (req, res) => {
+    const result = listingSchema.validate(req.body);
+    console.log(result);
     // Normal way --> let {title, descripition, image, price, location, country} = req.body;
     // Easier Way --> let listing = req.body.listing;       But we are doing it the below given way, but ye krne ke liye hamne phle new.ejs me name ko javascript object
     //banayi h. name="title" na likhke, name="listing[title]" likh kr.
