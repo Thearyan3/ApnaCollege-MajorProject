@@ -86,6 +86,15 @@ app.use(express.static(path.join(__dirname, "/public")));//to use static files l
 // });
 //Last me isko comment out kr denge kuki ye route hamne bas database ko check krne ke liye banaya tha. 
 
+const validateListing = (req, res, next) => {
+    let {error} = listingSchema.validate(req.body);
+    if(error){
+        let errMsg = error.details.map((el) => el.message).join(",");
+        throw new ExpressError(400, errMsg);
+    }else{
+        next();
+    }
+}
 
 //Index Route
 app.get("/listings", wrapAsync(async (req, res) => {
@@ -118,15 +127,13 @@ app.get("/listings/:id", wrapAsync(async (req, res) => {// Ye ek async function 
 }));
 
 //Create Route - 11th step - new.ejs ke andar wale add button pe click krte hi jis route pr phuchna h vo route yehi h yani create route. 
-app.post("/listings", wrapAsync(async (req, res) => {
-    const result = listingSchema.validate(req.body);
-    console.log(result);
+app.post("/listings", validateListing, wrapAsync(async (req, res) => {
     // Normal way --> let {title, descripition, image, price, location, country} = req.body;
     // Easier Way --> let listing = req.body.listing;       But we are doing it the below given way, but ye krne ke liye hamne phle new.ejs me name ko javascript object
     //banayi h. name="title" na likhke, name="listing[title]" likh kr.
-    if(!req.body.listing){
-        throw new ExpressError(400, "Send Valid data for listing");
-    }
+    // if(!req.body.listing){
+    //     throw new ExpressError(400, "Send Valid data for listing");
+    // }
     const newListing = new Listing(req.body.listing);
     await newListing.save();//Ab jo data hamne create krke add kr liya h, use database me insert krne ke liye save() method ka use krenge. 
     res.redirect("/listings");//Aur jaise hi add button par click krenge, vaise hi sara data ek listing me insert hokar vo listing database
@@ -137,7 +144,7 @@ app.post("/listings", wrapAsync(async (req, res) => {
 //Edit Route - 12th step - show.ejs me ek anchor tag add kiya jiska href direct hoga "/listings/:id/edit" route pe jiske liye ham ye route
 //create kr rhe h. Edit.ejs me form ke andar method to post h but action me method ko "?_method=PUT" ki help se put me convert kr diya taki data update hojaye.
 //method ko convert krne ke liye ek npm ka package aata h "npm i method-override".fir ise require krke use krna hota h.
-app.get("/listings/:id/edit", wrapAsync(async (req, res) => {
+app.get("/listings/:id/edit", validateListing, wrapAsync(async (req, res) => {
     let {id} = req.params; //Phle id extract kri
     const listing = await Listing.findById(id);//ab us id se specific listing ka data store kr liye listing me 
     res.render("listings/edit.ejs", {listing});//ab yehi listing edit.ejs ko pass krdi aur edit.ejs render kr diya is route pe.
@@ -147,9 +154,9 @@ app.get("/listings/:id/edit", wrapAsync(async (req, res) => {
 //milega jiske end me ek aur edit button hoga jo form submit krne ke liye hoga. Ab jaise hi user is button pr click krega to vo "/listings/:id" route pe phuch jayega
 //matlab dobara show.ejs pe phuch jayega.
 app.put("/listings/:id", wrapAsync(async (req, res) =>{
-    if(!req.body.listing){
-        throw new ExpressError(400, "Send Valid data for listing");
-    }
+    // if(!req.body.listing){
+    //     throw new ExpressError(400, "Send Valid data for listing");
+    // }
     let {id} = req.params;
     await Listing.findByIdAndUpdate(id, {...req.body.listing});//findbyidandupdate me id ki help se data find kiya aur ab use update krenge, aur saath hi me {
     //...req.body.listing} se saare data ko deconstruct krenge aur ek-ek krke show krenge. 
