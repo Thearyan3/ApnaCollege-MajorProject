@@ -31,6 +31,11 @@ const listingSchema = new Schema({//IIIrd step is creating Schema like this give
     price: Number, 
     location: String, 
     country: String,
+    reviews:[{
+          type: Schema.Types.ObjectId,
+          ref: "Review",
+      }    
+    ]
 });
 
 const Listing = mongoose.model("Listing", listingSchema);// IVth step is to create model from the already 
