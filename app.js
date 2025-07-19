@@ -11,7 +11,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");//15th step - Helps to create common templates or layout like Navbars, footers etc.
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
-const {listingSchema} = require("./schema.js");
+const {listingSchema, reviewSchema} = require("./schema.js");
 const Review = require("./models/reviews.js");
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";// 4th step[IIIrd step for 4th step- ye bas ek URL h, jo
@@ -97,6 +97,16 @@ const validateListing = (req, res, next) => {
     }
 }
 
+const validateReview = (req, res, next) => {
+    let {error} = reviewSchema.validate(req.body);
+    if(error){
+        let errMsg = error.details.map((el) => el.message).join(",");
+        throw new ExpressError(400, errMsg);
+    }else{
+        next();
+    }
+}
+
 //Index Route
 app.get("/listings", wrapAsync(async (req, res) => {
     const allListings = await Listing.find({});
@@ -120,7 +130,7 @@ app.get("/listings/new", (req, res) => {
 //krega jo use nhi milegi.
 app.get("/listings/:id", wrapAsync(async (req, res) => {// Ye ek async function hoga jisme request aur response ayega
     let {id} = req.params; //aur jaise hi request /:id pe ayegi to ham use phle req.params se extract krenge aur {id} me store krenge. 
-    const listing = await Listing.findById(id);//ab isi extracted id ki help se ham listing ke data ko find krenge aur isko listing variable ke andar store kradenge. 
+    const listing = await Listing.findById(id).populate("reviews");//ab isi extracted id ki help se ham listing ke data ko find krenge aur isko listing variable ke andar store kradenge. 
     res.render("listings/show.ejs", {listing});//jo data mila h use show.ejs ko pass krdenge aur show.ejs ko render kr denge is route pe.
     //Ye route isliye create kiya gya h taki 8th step wali listings me create kiye hue links par click krke jo data show hoga vo isi route ke base par hoga.
     //Aur ye route bhi "/listings/:id" pe jo get request aayegi us specific id ke data ko return krega.
@@ -176,7 +186,7 @@ app.delete("/listings/:id", wrapAsync(async (req, res) => {
 }));
 
 //Reviews - Post route
-app.post("/listings/:id/reviews", async(req, res) => {
+app.post("/listings/:id/reviews",validateReview, wrapAsync(async(req, res) => {
     let listing = await Listing.findById(req.params.id);
     let newReview = new Review(req.body.review);
 
@@ -185,8 +195,8 @@ app.post("/listings/:id/reviews", async(req, res) => {
     await newReview.save();
     await listing.save();
 
-    res.redirect(`listings/${listing._id}`);
-});
+    res.redirect(`/listings/${listing._id}`);
+}));
 
 app.get("/", (req, res) => {
     res.send("Hi, I am root");// 3rd step [get request ke liye "/" route banayenge aur uspe response send krenge 
