@@ -6,6 +6,8 @@ const mongoose = require("mongoose");// for 5th step, first require mongoose but
 const Schema = mongoose.Schema;//IInd step for Schema and model is to store schema method inside a variable so 
 // we don't have to write it again and again. 
 
+const Review = require("./reviews");
+
 const listingSchema = new Schema({//IIIrd step is creating Schema like this given below:
     title:{
         type: String, 
@@ -37,6 +39,12 @@ const listingSchema = new Schema({//IIIrd step is creating Schema like this give
       }    
     ]
 });
+
+listingSchema.post("findOneAndDelete", async(listing) => {
+  if(listing){
+    await Review.deleteMany({ _id: {$in: listing.reviews}} );
+  }
+})
 
 const Listing = mongoose.model("Listing", listingSchema);// IVth step is to create model from the already 
 // created Schema with the (mongoose.model) method and give any name to the model as you want. And write the schema 
