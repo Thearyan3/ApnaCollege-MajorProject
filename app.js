@@ -7,11 +7,11 @@ const Listing = require("./models/listing.js");// 5th step to create Schema and 
 const path = require("path");//8th step - ye phli line hoti h [app.set("views", path.join(__dirname, "views"))] ke liye.
 // path ek package h jisko require krna hota h views ko path dikhane ke liye.
 //Aur ejs package ko require krne ki zrurat nhi hoti kuki usko express package ne automaically, internally require kr liya h. 
-const methodOverride = require("method-override"); 
+const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");//15th step - Helps to create common templates or layout like Navbars, footers etc.
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
-const {listingSchema, reviewSchema} = require("./schema.js");
+const { listingSchema, reviewSchema } = require("./schema.js");
 const Review = require("./models/reviews.js");
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";// 4th step[IIIrd step for 4th step- ye bas ek URL h, jo
@@ -21,30 +21,30 @@ const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";// 4th step[IIIrd step 
 //, ("127.0.0.1:27017") se aur mongodb ke andar database ka naam hoga ("Wanderlust").]
 
 main()//IInd step for 4th step - main() function ko callback krenge, usko execute krne ke liye. Ye function ko create
-//krne ke baad, II step hota h use execute krne ke liye. aur kuki ye promise return krega to ham ispe then() method
-//apply kr denge.Aur then() method me ek console kra denge ("connected to DB"), yehi terminal me show hoga jab 
-//main() function execute hoga, mongoDB ke express ya Js se successfully connect hone par (with the help of
-// mongoose.connect method se).
-.then((res) => {
-    console.log("Connected to DB");//4th step
-})
-.catch((err) => {
-    console.log(err);//Agar koi (err) ayega to use console kradenge [console.log(err)] se. 
-});
-async function main(){
+    //krne ke baad, II step hota h use execute krne ke liye. aur kuki ye promise return krega to ham ispe then() method
+    //apply kr denge.Aur then() method me ek console kra denge ("connected to DB"), yehi terminal me show hoga jab 
+    //main() function execute hoga, mongoDB ke express ya Js se successfully connect hone par (with the help of
+    // mongoose.connect method se).
+    .then((res) => {
+        console.log("Connected to DB");//4th step
+    })
+    .catch((err) => {
+        console.log(err);//Agar koi (err) ayega to use console kradenge [console.log(err)] se. 
+    });
+async function main() {
     await mongoose.connect(MONGO_URL);//4th step [Ist step for 4th step - mongoDB ko express ya JS se connect krenge
     // mongoose.connect method se (ye ek mongoose ka method h), aur kuki ye method promise return krta h isiliye 
-//isko await kr denge aur main() naam ke function ke andar isko rakhenge aur function ko async kr denge. Yehi iska 
-//syntax h.(mongoosejs.com website pe jake check kr skte h). Promise ek aisi cheez hoti h jo code ki timeline ke 
-//hisaab se na chalke apne time pe chlti h to ham uspe (async-await, ya fir, then() method laga dete h), In dono
-//method ki help se promise jab bhi return hoke aayega vo usko code ke andar fit krdega aur mainly inki help se code
-//run krna band nhi hoga.]
+    //isko await kr denge aur main() naam ke function ke andar isko rakhenge aur function ko async kr denge. Yehi iska 
+    //syntax h.(mongoosejs.com website pe jake check kr skte h). Promise ek aisi cheez hoti h jo code ki timeline ke 
+    //hisaab se na chalke apne time pe chlti h to ham uspe (async-await, ya fir, then() method laga dete h), In dono
+    //method ki help se promise jab bhi return hoke aayega vo usko code ke andar fit krdega aur mainly inki help se code
+    //run krna band nhi hoga.]
 }
 
 //Jab bhi ham express package ke andar views engine ko use krte h, iska matlab hota h ki saare ejs template ek views naame
 //ke folder ke andar hone chahiye. Kuki express views naam ke folder ko hi dhudenga render krne ke liye. 
 app.set("view engine", "ejs");//8th step - IInd step - "views engine" ko "ejs" set krenge, app.set ki help se.
-//views ka matlab ham template samajh skte h matlab ek aise package jo hamare views ko create, render ya show krne ke 
+//views ka matlab ham template samajh skte h matlab ek aisa package jo hamare views ko create, render ya show krne ke 
 //kaam aayega usko ham ejs pe set krdenge. 
 //render ka matlab hota h file ko send krna aur res.render() me ham sirf ejs file ko hi send krenge. 
 app.set("views", path.join(__dirname, "views"));//is line ka matlab h ki ham views naam ke folder ka path set krne 
@@ -54,7 +54,7 @@ app.set("views", path.join(__dirname, "views"));//is line ka matlab h ki ham vie
 //__dirname me "backend/ejsdir" path likha hua h aur isko hamne aage, "views" se join kr diya to views ka correct path ho gya 
 //"backend/ejsdir/views". Aur isi joined path se ham app ko bta rhe h ki views ko vha mat search krna jha se server run hua h. 
 //Usko hamesha is joined path pe jaakar search krna. 
-app.use(express.urlencoded({extended: true}));// requested Data ko parse krne ke liye.(Show Route ka part h ye)
+app.use(express.urlencoded({ extended: true }));// requested Data ko parse krne ke liye.(Show Route ka part h ye)
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);//15th step - yha pe ejs ke liye engine define kiya ja rha h, jo hoga ejsMate.
 //16th step - To create a layouts folder inside views folder. For more info go to layouts folder.
@@ -88,21 +88,21 @@ app.use(express.static(path.join(__dirname, "/public")));//to use static files l
 //Last me isko comment out kr denge kuki ye route hamne bas database ko check krne ke liye banaya tha. 
 
 const validateListing = (req, res, next) => {
-    let {error} = listingSchema.validate(req.body);
-    if(error){
+    let { error } = listingSchema.validate(req.body);
+    if (error) {
         let errMsg = error.details.map((el) => el.message).join(",");
         throw new ExpressError(400, errMsg);
-    }else{
+    } else {
         next();
     }
 }
 
 const validateReview = (req, res, next) => {
-    let {error} = reviewSchema.validate(req.body);
-    if(error){
+    let { error } = reviewSchema.validate(req.body);
+    if (error) {
         let errMsg = error.details.map((el) => el.message).join(",");
         throw new ExpressError(400, errMsg);
-    }else{
+    } else {
         next();
     }
 }
@@ -110,7 +110,7 @@ const validateReview = (req, res, next) => {
 //Index Route
 app.get("/listings", wrapAsync(async (req, res) => {
     const allListings = await Listing.find({});
-    res.render("listings/index.ejs", {allListings});//8th step - IInd step - "/listings" naam ka route, database ke saare data tak phuchne 
+    res.render("listings/index.ejs", { allListings });//8th step - IInd step - "/listings" naam ka route, database ke saare data tak phuchne 
     //ke liye. Isme hamne Listing.find({}) method use kiya aur empty condition pass ki h. Is method se sara data find hoke store ho jayega
     //allListings naam ke variable me. Ab ham response me render kr denge "index.ejs" ko jo listings folder ke andar h isliye ham 
     //"listings/index.ejs" likhenge aur index.ejs ke andar ham pass krdenge apne saare listings ko {allListings} ki help se. 
@@ -129,9 +129,9 @@ app.get("/listings/new", (req, res) => {
 //Show Route - 9th step - Ye baat dhyaan rhe ki show route new route ke neeche hi aaye kuki app.js /new ko id samajh kr search
 //krega jo use nhi milegi.
 app.get("/listings/:id", wrapAsync(async (req, res) => {// Ye ek async function hoga jisme request aur response ayega
-    let {id} = req.params; //aur jaise hi request /:id pe ayegi to ham use phle req.params se extract krenge aur {id} me store krenge. 
+    let { id } = req.params; //aur jaise hi request /:id pe ayegi to ham use phle req.params se extract krenge aur {id} me store krenge. 
     const listing = await Listing.findById(id).populate("reviews");//ab isi extracted id ki help se ham listing ke data ko find krenge aur isko listing variable ke andar store kradenge. 
-    res.render("listings/show.ejs", {listing});//jo data mila h use show.ejs ko pass krdenge aur show.ejs ko render kr denge is route pe.
+    res.render("listings/show.ejs", { listing });//jo data mila h use show.ejs ko pass krdenge aur show.ejs ko render kr denge is route pe.
     //Ye route isliye create kiya gya h taki 8th step wali listings me create kiye hue links par click krke jo data show hoga vo isi route ke base par hoga.
     //Aur ye route bhi "/listings/:id" pe jo get request aayegi us specific id ke data ko return krega.
     //Vo krne ke liye hame ek show.ejs file banani padegi aur usme isi extracted data ko show krna hoga. To vo listings folder me mil jayegi.
@@ -149,27 +149,27 @@ app.post("/listings", validateListing, wrapAsync(async (req, res) => {
     await newListing.save();//Ab jo data hamne create krke add kr liya h, use database me insert krne ke liye save() method ka use krenge. 
     res.redirect("/listings");//Aur jaise hi add button par click krenge, vaise hi sara data ek listing me insert hokar vo listing database
     //me store ho jayegi aur index.ejs wali file matlab "/listings" route par show ho jayegi. 
-    })
+})
 );
 
 //Edit Route - 12th step - show.ejs me ek anchor tag add kiya jiska href direct hoga "/listings/:id/edit" route pe jiske liye ham ye route
 //create kr rhe h. Edit.ejs me form ke andar method to post h but action me method ko "?_method=PUT" ki help se put me convert kr diya taki data update hojaye.
 //method ko convert krne ke liye ek npm ka package aata h "npm i method-override".fir ise require krke use krna hota h.
 app.get("/listings/:id/edit", validateListing, wrapAsync(async (req, res) => {
-    let {id} = req.params; //Phle id extract kri
+    let { id } = req.params; //Phle id extract kri
     const listing = await Listing.findById(id);//ab us id se specific listing ka data store kr liye listing me 
-    res.render("listings/edit.ejs", {listing});//ab yehi listing edit.ejs ko pass krdi aur edit.ejs render kr diya is route pe.
+    res.render("listings/edit.ejs", { listing });//ab yehi listing edit.ejs ko pass krdi aur edit.ejs render kr diya is route pe.
 }));
 
 //Update Route - 13th step - Jaise hi user show.ejs wale edit this listing pe click krega to vo "/listings/:id/edit" route pe aajayega, is route pe use ek edit form
 //milega jiske end me ek aur edit button hoga jo form submit krne ke liye hoga. Ab jaise hi user is button pr click krega to vo "/listings/:id" route pe phuch jayega
 //matlab dobara show.ejs pe phuch jayega.
-app.put("/listings/:id", wrapAsync(async (req, res) =>{
+app.put("/listings/:id", wrapAsync(async (req, res) => {
     // if(!req.body.listing){
     //     throw new ExpressError(400, "Send Valid data for listing");
     // }
-    let {id} = req.params;
-    await Listing.findByIdAndUpdate(id, {...req.body.listing});//findbyidandupdate me id ki help se data find kiya aur ab use update krenge, aur saath hi me {
+    let { id } = req.params;
+    await Listing.findByIdAndUpdate(id, { ...req.body.listing });//findbyidandupdate me id ki help se data find kiya aur ab use update krenge, aur saath hi me {
     //...req.body.listing} se saare data ko deconstruct krenge aur ek-ek krke show krenge. 
     res.redirect(`/listings/${id}`);
 }));
@@ -179,14 +179,14 @@ app.put("/listings/:id", wrapAsync(async (req, res) =>{
 //Ab jaise hi user "/listings/:id" route pe aayega to use ek delete button milega aur jaise hi vo uspe click krega to vo specific id wala
 //data ya listing database aur route se delete ho jayegi.
 app.delete("/listings/:id", wrapAsync(async (req, res) => {
-    let {id} = req.params;
+    let { id } = req.params;
     const deletedListing = await Listing.findByIdAndDelete(id);
     console.log(deletedListing);
     res.redirect("/listings");
 }));
 
-//Reviews - Post route
-app.post("/listings/:id/reviews",validateReview, wrapAsync(async(req, res) => {
+//Reviews - Post review route
+app.post("/listings/:id/reviews", validateReview, wrapAsync(async (req, res) => {
     let listing = await Listing.findById(req.params.id);
     let newReview = new Review(req.body.review);
 
@@ -196,6 +196,14 @@ app.post("/listings/:id/reviews",validateReview, wrapAsync(async(req, res) => {
     await listing.save();
 
     res.redirect(`/listings/${listing._id}`);
+}));
+
+//Delete review route
+app.delete("/listings/:id/reviews/:reviewId", wrapAsync(async (req, res) => {
+    let { id, reviewId } = req.params;
+    await Listing.findByIdAndUpdate(id, {$pull: {reviews: reviewId}});
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/listings/${id}`);
 }));
 
 app.get("/", (req, res) => {
@@ -208,8 +216,8 @@ app.all(/.*/, (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-    let {statusCode = 500, message = "Something Went Wrong!"} = err;
-    res.status(statusCode).render("error.ejs", {message});
+    let { statusCode = 500, message = "Something Went Wrong!" } = err;
+    res.status(statusCode).render("error.ejs", { message });
 });
 
 app.listen(8080, () => {
