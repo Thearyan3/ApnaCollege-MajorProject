@@ -89,16 +89,6 @@ app.use(express.static(path.join(__dirname, "/public")));//to use static files l
 // });
 //Last me isko comment out kr denge kuki ye route hamne bas database ko check krne ke liye banaya tha. 
 
-const validateListing = (req, res, next) => {
-    let { error } = listingSchema.validate(req.body);
-    if (error) {
-        let errMsg = error.details.map((el) => el.message).join(",");
-        throw new ExpressError(400, errMsg);
-    } else {
-        next();
-    }
-}
-
 const validateReview = (req, res, next) => {
     let { error } = reviewSchema.validate(req.body);
     if (error) {
