@@ -1,18 +1,12 @@
-//Important** - 7th step init folder ke andar h.** 
-const express = require("express");// 1st Step - express package ko require krenge
+ const express = require("express");// 1st Step - express package ko require krenge
 const app = express();// 1st Step
 const mongoose = require("mongoose");// 4th step
-const Listing = require("./models/listing.js");// 5th step to create Schema and model and then export
-//them to app.js by (module.exports) [for 5th step's more information, Go to models/listing.js]
 const path = require("path");//8th step - ye phli line hoti h [app.set("views", path.join(__dirname, "views"))] ke liye.
 // path ek package h jisko require krna hota h views ko path dikhane ke liye.
 //Aur ejs package ko require krne ki zrurat nhi hoti kuki usko express package ne automaically, internally require kr liya h. 
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");//15th step - Helps to create common templates or layout like Navbars, footers etc.
-const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
-const { listingSchema, reviewSchema } = require("./schema.js");
-const Review = require("./models/reviews.js");
 
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");

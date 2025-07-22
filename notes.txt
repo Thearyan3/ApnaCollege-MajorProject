@@ -1,0 +1,6 @@
+//Important** - 7th step init folder ke andar h.**
+// const Listing = require("./models/listing.js");// 5th step to create Schema and model and then export
+//them to app.js by (module.exports) [for 5th step's more information, Go to models/listing.js]
+// const wrapAsync = require("./utils/wrapAsync.js");
+// const { listingSchema, reviewSchema } = require("./schema.js");
+// const Review = require("./models/reviews.js");

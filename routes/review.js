@@ -1,9 +1,10 @@
-const expres = require("express");
+const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
-const { listingSchema, reviewSchema } = require("../schema.js");
+const { reviewSchema } = require("../schema.js");
 const Review = require("../models/reviews.js");
+const Listing = require("../models/listing.js");
 
 const validateReview = (req, res, next) => {
     let { error } = reviewSchema.validate(req.body);
