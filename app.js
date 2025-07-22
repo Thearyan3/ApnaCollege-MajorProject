@@ -85,7 +85,7 @@ app.use(express.static(path.join(__dirname, "/public")));//to use static files l
 //Last me isko comment out kr denge kuki ye route hamne bas database ko check krne ke liye banaya tha. 
 
 app.use("/listings", listings);
-app.use("/reviews", reviews);
+app.use("/listings/:id/reviews", reviews);
 
 app.get("/", (req, res) => {
     res.send("Hi, I am root");// 3rd step [get request ke liye "/" route banayenge aur uspe response send krenge 
