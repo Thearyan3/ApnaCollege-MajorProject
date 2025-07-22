@@ -14,7 +14,7 @@ const ExpressError = require("./utils/ExpressError.js");
 const { listingSchema, reviewSchema } = require("./schema.js");
 const Review = require("./models/reviews.js");
 
-const listings = ("./routes/listing.js");
+const listings = require("./routes/listing.js");
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";// 4th step[IIIrd step for 4th step- ye bas ek URL h, jo
 // mongoose.connect me likhna hota h ye batane ke liye ki kisko kisse connect krna h. Yaha pe hamne isko ek variable
