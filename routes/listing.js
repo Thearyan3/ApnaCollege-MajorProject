@@ -39,6 +39,10 @@ router.get("/new", (req, res) => {
 router.get("/:id", wrapAsync(async (req, res) => {// Ye ek async function hoga jisme request aur response ayega
     let { id } = req.params; //aur jaise hi request /:id pe ayegi to ham use phle req.params se extract krenge aur {id} me store krenge. 
     const listing = await Listing.findById(id).populate("reviews");//ab isi extracted id ki help se ham listing ke data ko find krenge aur isko listing variable ke andar store kradenge. 
+    if(!listing){
+        req.flash("error", "Listing you requested for does not exist");
+        res.redirect("/listings");
+    }
     res.render("listings/show.ejs", { listing });//jo data mila h use show.ejs ko pass krdenge aur show.ejs ko render kr denge is route pe.
     //Ye route isliye create kiya gya h taki 8th step wali listings me create kiye hue links par click krke jo data show hoga vo isi route ke base par hoga.
     //Aur ye route bhi "/listings/:id" pe jo get request aayegi us specific id ke data ko return krega.
@@ -91,7 +95,7 @@ router.put("/:id", wrapAsync(async (req, res) => {
 router.delete("/:id", wrapAsync(async (req, res) => {
     let { id } = req.params;
     const deletedListing = await Listing.findByIdAndDelete(id);
-    console.log(deletedListing);
+    // console.log(deletedListing);
         req.flash("success", "Listing Deleted!");
     res.redirect("/listings");
 }));
