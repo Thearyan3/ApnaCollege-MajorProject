@@ -7,6 +7,7 @@ const path = require("path");//8th step - ye phli line hoti h [app.set("views", 
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");//15th step - Helps to create common templates or layout like Navbars, footers etc.
 const ExpressError = require("./utils/ExpressError.js");
+const session = require("express-session");
 
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
@@ -56,6 +57,14 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);//15th step - yha pe ejs ke liye engine define kiya ja rha h, jo hoga ejsMate.
 //16th step - To create a layouts folder inside views folder. For more info go to layouts folder.
 app.use(express.static(path.join(__dirname, "/public")));//to use static files like CSS.
+
+const sessionOptions = {
+    secret: "mysecretsuperstring", 
+    resave: false, 
+    saveUninitialized: true
+}
+
+app.use(session(sessionOptions));
 
 // app.get("/testListing", async (req, res) => { //6th step - Ab Wanderlust Database mongoDB ke andar create ho chuka h
 //to lekin iske andar jo listings naam ki collection/model hamne listing.js me allListing Schema ki help se banayi h,
