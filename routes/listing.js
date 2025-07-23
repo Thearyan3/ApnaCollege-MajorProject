@@ -80,6 +80,7 @@ router.put("/:id", wrapAsync(async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, { ...req.body.listing });//findbyidandupdate me id ki help se data find kiya aur ab use update krenge, aur saath hi me {
     //...req.body.listing} se saare data ko deconstruct krenge aur ek-ek krke show krenge. 
+    req.flash("success", "Listing Updated!");
     res.redirect(`/listings/${id}`);
 }));
 
@@ -91,6 +92,7 @@ router.delete("/:id", wrapAsync(async (req, res) => {
     let { id } = req.params;
     const deletedListing = await Listing.findByIdAndDelete(id);
     console.log(deletedListing);
+        req.flash("success", "Listing Deleted!");
     res.redirect("/listings");
 }));
 
