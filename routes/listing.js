@@ -41,7 +41,7 @@ router.get("/:id", wrapAsync(async (req, res) => {// Ye ek async function hoga j
     const listing = await Listing.findById(id).populate("reviews");//ab isi extracted id ki help se ham listing ke data ko find krenge aur isko listing variable ke andar store kradenge. 
     if(!listing){
         req.flash("error", "Listing you requested for does not exist");
-        res.redirect("/listings");
+        return res.redirect("/listings");
     }
     res.render("listings/show.ejs", { listing });//jo data mila h use show.ejs ko pass krdenge aur show.ejs ko render kr denge is route pe.
     //Ye route isliye create kiya gya h taki 8th step wali listings me create kiye hue links par click krke jo data show hoga vo isi route ke base par hoga.
