@@ -4,20 +4,26 @@ const app = express();
 // const posts = require("./routes/post");
 // const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const flash = require("connect-flash");
+const path = require("path");
 
 const sessionOptions = { secret: "mysecretsuperstring", resave: false, saveUninitialized: true };
 
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 app.use(session(sessionOptions));
+app.use(flash());
 
 app.get("/register", (req, res) => {
     let {name = "anonymous"} = req.query;
     req.session.name = name;
+    req.flash("success", "user registered successfully");
     res.redirect("/hello");
 });
 
 app.get("/hello", (req, res) => {
-    res.send(`hello ${req.session.name}`);
-})
+    res.render("page.ejs", { name: req.session.name, msg: req.flash("success") });
+});
 
 // app.get("/reqcount", (req, res) => {
 //     if(req.session.count){
