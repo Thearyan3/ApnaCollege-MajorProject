@@ -71,6 +71,10 @@ router.post("/", validateListing, wrapAsync(async (req, res) => {
 router.get("/:id/edit", validateListing, wrapAsync(async (req, res) => {
     let { id } = req.params; //Phle id extract kri
     const listing = await Listing.findById(id);//ab us id se specific listing ka data store kr liye listing me 
+    if(!listing){
+        req.flash("error", "Listing you requested for does not exist");
+        return res.redirect("/listings");
+    }
     res.render("listings/edit.ejs", { listing });//ab yehi listing edit.ejs ko pass krdi aur edit.ejs render kr diya is route pe.
 }));
 
