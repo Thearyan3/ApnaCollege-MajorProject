@@ -5,16 +5,28 @@ const app = express();
 // const cookieParser = require("cookie-parser");
 const session = require("express-session");
 
-app.use(session({ secret: "mysecretsuperstring", resave: false, saveUninitialized: true }));
+const sessionOptions = { secret: "mysecretsuperstring", resave: false, saveUninitialized: true };
 
-app.get("/reqcount", (req, res) => {
-    if(req.session.count){
-        res.session.count++;
-    }else{
-        req.session.count = 1;
-    }
-    res.send(`You send request ${req.session.count} times`);
+app.use(session(sessionOptions));
+
+app.get("/register", (req, res) => {
+    let {name = "anonymous"} = req.query;
+    req.session.name = name;
+    res.redirect("/hello");
 });
+
+app.get("/hello", (req, res) => {
+    res.send(`hello ${req.session.name}`);
+})
+
+// app.get("/reqcount", (req, res) => {
+//     if(req.session.count){
+//         req.session.count++;
+//     }else{
+//         req.session.count = 1;
+//     }
+//     res.send(`You send request ${req.session.count} times`);
+// });
 
 // app.use(cookieParser("secretcode"));
 // app.use("/users", users);
