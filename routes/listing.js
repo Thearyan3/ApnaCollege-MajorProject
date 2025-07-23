@@ -55,6 +55,7 @@ router.post("/", validateListing, wrapAsync(async (req, res) => {
     // }
     const newListing = new Listing(req.body.listing);
     await newListing.save();//Ab jo data hamne create krke add kr liya h, use database me insert krne ke liye save() method ka use krenge. 
+    req.flash("success", "New Listing Created!");
     res.redirect("/listings");//Aur jaise hi add button par click krenge, vaise hi sara data ek listing me insert hokar vo listing database
     //me store ho jayegi aur index.ejs wali file matlab "/listings" route par show ho jayegi. 
 })

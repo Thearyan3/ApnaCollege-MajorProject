@@ -8,6 +8,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");//15th step - Helps to create common templates or layout like Navbars, footers etc.
 const ExpressError = require("./utils/ExpressError.js");
 const session = require("express-session");
+const flash = require("connect-flash");
 
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
@@ -61,10 +62,21 @@ app.use(express.static(path.join(__dirname, "/public")));//to use static files l
 const sessionOptions = {
     secret: "mysecretsuperstring", 
     resave: false, 
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+    }
 }
 
+app.get("/", (req, res) => {
+    res.send("Hi, I am root");// 3rd step [get request ke liye "/" route banayenge aur uspe response send krenge 
+    // (res.send) ke help se aur check krenge ki hamara route work kr rha h ya nhi]
+});
+
 app.use(session(sessionOptions));
+app.use(flash());
 
 // app.get("/testListing", async (req, res) => { //6th step - Ab Wanderlust Database mongoDB ke andar create ho chuka h
 //to lekin iske andar jo listings naam ki collection/model hamne listing.js me allListing Schema ki help se banayi h,
@@ -93,13 +105,13 @@ app.use(session(sessionOptions));
 // });
 //Last me isko comment out kr denge kuki ye route hamne bas database ko check krne ke liye banaya tha. 
 
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    next();
+});
+
 app.use("/listings", listings);
 app.use("/listings/:id/reviews", reviews);
-
-app.get("/", (req, res) => {
-    res.send("Hi, I am root");// 3rd step [get request ke liye "/" route banayenge aur uspe response send krenge 
-    // (res.send) ke help se aur check krenge ki hamara route work kr rha h ya nhi]
-});
 
 app.all(/.*/, (req, res, next) => {
     next(new ExpressError(404, "Page Not Found!"));
