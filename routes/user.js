@@ -34,7 +34,7 @@ router.post(
     }),
     async(req, res) => {
         req.flash("success", "Welcome to Wanderlust!");
-        req.redi("/listings");
+        res.redirect("/listings");
 });
 
 module.exports = router;
