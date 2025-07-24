@@ -89,15 +89,15 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.get("/demouser", async(req, res) => {
-    let fakeUser = new User({
-        email: "student@gmail.com",
-        username: "sigma-student",
-    });
+// app.get("/demouser", async(req, res) => {
+//     let fakeUser = new User({
+//         email: "student@gmail.com",
+//         username: "sigma-student",
+//     });
 
-    let newUser = await User.register(fakeUser, "helloworld");
-    res.send(newUser);
-});
+//     let newUser = await User.register(fakeUser, "helloworld");
+//     res.send(newUser);
+// });
 
 // app.get("/testListing", async (req, res) => { //6th step - Ab Wanderlust Database mongoDB ke andar create ho chuka h
 //to lekin iske andar jo listings naam ki collection/model hamne listing.js me allListing Schema ki help se banayi h,
