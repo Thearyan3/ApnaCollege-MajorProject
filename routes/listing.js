@@ -29,6 +29,11 @@ router.get("/", wrapAsync(async (req, res) => {
 //New Route - 10th step - Is step me ham get request send kr rhe honge "/listings/new" route ko jiske base pe hame ek form milega listing ko create krne ke liye.
 //Jaise hi ham form ko submit krenge vaise hi 2nd request jo jayegi vo POST request par jayegi "/listings" route par. Ye request ham next step me create krenge. 
 router.get("/new", (req, res) => {
+    console.log(req.user);
+    if(!req.isAuthenticated()){
+        req.flash("error", "You must be logged in to create listing");
+        return req.redirect("/login");
+    }
     res.render("listings/new.ejs");//Ab hamne new.ejs ke andar ek form prepare kr liya h aur use ab index.ejs ke andar ek button h "Create New Listing" jo show.ejs ke baad
     //create krna h [steps ko dhyaan se padhna], us par click krke is form pr phuch gya h. Ab jaise hi sari info fill krke user Add pe click krega to ek POST 
     // request "/listings" pr jayegi. Ye post request next step me create krenge. 
