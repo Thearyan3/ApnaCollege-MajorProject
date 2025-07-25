@@ -42,7 +42,7 @@ router.get("/logout", (req, res, next) => {
         if(err){
             return next(err);
         }
-        req.flash("error", "You are logged Out!");
+        req.flash("success", "You are logged Out!");
         res.redirect("/listings");
     });
 });
