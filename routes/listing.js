@@ -4,6 +4,7 @@ const Listing = require("../models/listing.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
 const { listingSchema, reviewSchema } = require("../schema.js");
+const { isLoggedin } = require("../middleware.js");
 
 const validateListing = (req, res, next) => {
     let { error } = listingSchema.validate(req.body);
@@ -28,12 +29,7 @@ router.get("/", wrapAsync(async (req, res) => {
 
 //New Route - 10th step - Is step me ham get request send kr rhe honge "/listings/new" route ko jiske base pe hame ek form milega listing ko create krne ke liye.
 //Jaise hi ham form ko submit krenge vaise hi 2nd request jo jayegi vo POST request par jayegi "/listings" route par. Ye request ham next step me create krenge. 
-router.get("/new", (req, res) => {
-    console.log(req.user);
-    if(!req.isAuthenticated()){
-        req.flash("error", "You must be logged in to create listing");
-        return req.redirect("/login");
-    }
+router.get("/new", isLoggedin, (req, res) => {
     res.render("listings/new.ejs");//Ab hamne new.ejs ke andar ek form prepare kr liya h aur use ab index.ejs ke andar ek button h "Create New Listing" jo show.ejs ke baad
     //create krna h [steps ko dhyaan se padhna], us par click krke is form pr phuch gya h. Ab jaise hi sari info fill krke user Add pe click krega to ek POST 
     // request "/listings" pr jayegi. Ye post request next step me create krenge. 
@@ -55,7 +51,7 @@ router.get("/:id", wrapAsync(async (req, res) => {// Ye ek async function hoga j
 }));
 
 //Create Route - 11th step - new.ejs ke andar wale add button pe click krte hi jis route pr phuchna h vo route yehi h yani create route. 
-router.post("/", validateListing, wrapAsync(async (req, res) => {
+router.post("/", isLoggedin, validateListing, wrapAsync(async (req, res) => {
     // Normal way --> let {title, descripition, image, price, location, country} = req.body;
     // Easier Way --> let listing = req.body.listing;       But we are doing it the below given way, but ye krne ke liye hamne phle new.ejs me name ko javascript object
     //banayi h. name="title" na likhke, name="listing[title]" likh kr.
@@ -73,7 +69,7 @@ router.post("/", validateListing, wrapAsync(async (req, res) => {
 //Edit Route - 12th step - show.ejs me ek anchor tag add kiya jiska href direct hoga "/listings/:id/edit" route pe jiske liye ham ye route
 //create kr rhe h. Edit.ejs me form ke andar method to post h but action me method ko "?_method=PUT" ki help se put me convert kr diya taki data update hojaye.
 //method ko convert krne ke liye ek npm ka package aata h "npm i method-override".fir ise require krke use krna hota h.
-router.get("/:id/edit", validateListing, wrapAsync(async (req, res) => {
+router.get("/:id/edit", isLoggedin, validateListing, wrapAsync(async (req, res) => {
     let { id } = req.params; //Phle id extract kri
     const listing = await Listing.findById(id);//ab us id se specific listing ka data store kr liye listing me 
     if(!listing){
@@ -86,7 +82,7 @@ router.get("/:id/edit", validateListing, wrapAsync(async (req, res) => {
 //Update Route - 13th step - Jaise hi user show.ejs wale edit this listing pe click krega to vo "/listings/:id/edit" route pe aajayega, is route pe use ek edit form
 //milega jiske end me ek aur edit button hoga jo form submit krne ke liye hoga. Ab jaise hi user is button pr click krega to vo "/listings/:id" route pe phuch jayega
 //matlab dobara show.ejs pe phuch jayega.
-router.put("/:id", wrapAsync(async (req, res) => {
+router.put("/:id", isLoggedin, wrapAsync(async (req, res) => {
     // if(!req.body.listing){
     //     throw new ExpressError(400, "Send Valid data for listing");
     // }
@@ -101,7 +97,7 @@ router.put("/:id", wrapAsync(async (req, res) => {
 //create hoga jo ek form ke andar hoga aur form ke andar post method ko ham convert krenge delete me with the help of method-override.
 //Ab jaise hi user "/listings/:id" route pe aayega to use ek delete button milega aur jaise hi vo uspe click krega to vo specific id wala
 //data ya listing database aur route se delete ho jayegi.
-router.delete("/:id", wrapAsync(async (req, res) => {
+router.delete("/:id", isLoggedin, wrapAsync(async (req, res) => {
     let { id } = req.params;
     const deletedListing = await Listing.findByIdAndDelete(id);
     // console.log(deletedListing);
