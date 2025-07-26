@@ -9,12 +9,12 @@ const Schema = mongoose.Schema;//IInd step for Schema and model is to store sche
 const Review = require("./reviews");
 
 const listingSchema = new Schema({//IIIrd step is creating Schema like this given below:
-    title:{
-        type: String, 
-        required: true
-    },
-    description: String,
- image: {
+  title: {
+    type: String,
+    required: true
+  },
+  description: String,
+  image: {
     type: String,
     default: "https://images.unsplash.com/photo-1626808642875-0aa545482dfb?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     set: (v) => {
@@ -30,19 +30,23 @@ const listingSchema = new Schema({//IIIrd step is creating Schema like this give
       return v;
     }
   },
-    price: Number, 
-    location: String, 
-    country: String,
-    reviews:[{
-          type: Schema.Types.ObjectId,
-          ref: "Review",
-      }    
-    ]
+  price: Number,
+  location: String,
+  country: String,
+  reviews: [{
+    type: Schema.Types.ObjectId,
+    ref: "Review",
+  }
+  ],
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  }
 });
 
-listingSchema.post("findOneAndDelete", async(listing) => {
-  if(listing){
-    await Review.deleteMany({ _id: {$in: listing.reviews}} );
+listingSchema.post("findOneAndDelete", async (listing) => {
+  if (listing) {
+    await Review.deleteMany({ _id: { $in: listing.reviews } });
   }
 })
 

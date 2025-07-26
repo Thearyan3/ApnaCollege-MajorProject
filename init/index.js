@@ -29,6 +29,7 @@ const initDB = async () => {
     //bina kisi condition ke sara data delete krdo.}, Yaha pe Listing naam isliye use hua h kuki listing.js me jo 
     //hamne model create kiya tha uska naam hamne Listing rakha tha aur deleteMany({}) method model/collection ke naame
     //ke saath hi lagta h.
+    initData.data = initData.data.map((obj) => ({...obj, owner:"6882693a6479dc46dbe32b1d"}));
     await Listing.insertMany(initData.data);//Listing.insertMany() bhi same mongoDB ka method h aur isse bhotsara data
     //ek hi baar me insert kiya jata h database ke andar.
     //yaha pe (initData.data) isliye likha h kuki initData naam ke variable me to sara data hamne require kr liya jo
