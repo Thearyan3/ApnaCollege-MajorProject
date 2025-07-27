@@ -95,7 +95,7 @@ router.put("/:id", isLoggedin, validateListing, wrapAsync(async (req, res) => {
     req.flash("error", "You don't have permission to edit");
     return res.redirect(`/listings/${id}`);
     }
-    await Listing.findByIdandUpdate(id, {...req.body.listing});
+    await Listing.findByIdAndUpdate(id, {...req.body.listing});
     req.flash("success", " listing Updated!");
     res.redirect(`/listings/${id}`);
 }));
