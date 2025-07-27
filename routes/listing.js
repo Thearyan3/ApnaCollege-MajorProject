@@ -84,14 +84,19 @@ router.get("/:id/edit", isLoggedin, validateListing, wrapAsync(async (req, res) 
 //Update Route - 13th step - Jaise hi user show.ejs wale edit this listing pe click krega to vo "/listings/:id/edit" route pe aajayega, is route pe use ek edit form
 //milega jiske end me ek aur edit button hoga jo form submit krne ke liye hoga. Ab jaise hi user is button pr click krega to vo "/listings/:id" route pe phuch jayega
 //matlab dobara show.ejs pe phuch jayega.
-router.put("/:id", isLoggedin, wrapAsync(async (req, res) => {
+router.put("/:id", isLoggedin, validateListing, wrapAsync(async (req, res) => {
     // if(!req.body.listing){
     //     throw new ExpressError(400, "Send Valid data for listing");
     // }
     let { id } = req.params;
-    await Listing.findByIdAndUpdate(id, { ...req.body.listing });//findbyidandupdate me id ki help se data find kiya aur ab use update krenge, aur saath hi me {
+    let listing = await Listing.findById(id);//findbyidandupdate me id ki help se data find kiya aur ab use update krenge, aur saath hi me {
     //...req.body.listing} se saare data ko deconstruct krenge aur ek-ek krke show krenge. 
-    req.flash("success", "Listing Updated!");
+    if(!listing.owner.equals(res.locals.currUser._id)){
+    req.flash("error", "You don't have permission to edit");
+    return res.redirect(`/listings/${id}`);
+    }
+    await Listing.findByIdandUpdate(id, {...req.body.listing});
+    req.flash("success", " listing Updated!");
     res.redirect(`/listings/${id}`);
 }));
 
