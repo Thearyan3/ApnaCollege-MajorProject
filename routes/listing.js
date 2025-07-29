@@ -29,7 +29,7 @@ router.get("/new", isLoggedin, (req, res) => {
 //krega jo use nhi milegi.
 router.get("/:id", wrapAsync(async (req, res) => {// Ye ek async function hoga jisme request aur response ayega
     let { id } = req.params; //aur jaise hi request /:id pe ayegi to ham use phle req.params se extract krenge aur {id} me store krenge. 
-    const listing = await Listing.findById(id).populate("reviews").populate("owner");//ab isi extracted id ki help se ham listing ke data ko find krenge aur isko listing variable ke andar store kradenge. 
+    const listing = await Listing.findById(id).populate({path: "reviews", populate:{path: "author",},}).populate("owner");//ab isi extracted id ki help se ham listing ke data ko find krenge aur isko listing variable ke andar store kradenge. 
     if(!listing){
         req.flash("error", "Listing you requested for does not exist");
         return res.redirect("/listings");
