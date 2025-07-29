@@ -2,19 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Listing = require("../models/listing.js");
 const wrapAsync = require("../utils/wrapAsync.js");
-const ExpressError = require("../utils/ExpressError.js");
-const { listingSchema, reviewSchema } = require("../schema.js");
-const { isLoggedin } = require("../middleware.js");
+const { isLoggedin, isOwner, validateListing } = require("../middleware.js");
 
-const validateListing = (req, res, next) => {
-    let { error } = listingSchema.validate(req.body);
-    if (error) {
-        let errMsg = error.details.map((el) => el.message).join(",");
-        throw new ExpressError(400, errMsg);
-    } else {
-        next();
-    }
-}
+
 
 //Index Route
 router.get("/", wrapAsync(async (req, res) => {
@@ -71,7 +61,7 @@ router.post("/", isLoggedin, validateListing, wrapAsync(async (req, res) => {
 //Edit Route - 12th step - show.ejs me ek anchor tag add kiya jiska href direct hoga "/listings/:id/edit" route pe jiske liye ham ye route
 //create kr rhe h. Edit.ejs me form ke andar method to post h but action me method ko "?_method=PUT" ki help se put me convert kr diya taki data update hojaye.
 //method ko convert krne ke liye ek npm ka package aata h "npm i method-override".fir ise require krke use krna hota h.
-router.get("/:id/edit", isLoggedin, validateListing, wrapAsync(async (req, res) => {
+router.get("/:id/edit", isLoggedin, isOwner, validateListing, wrapAsync(async (req, res) => {
     let { id } = req.params; //Phle id extract kri
     const listing = await Listing.findById(id);//ab us id se specific listing ka data store kr liye listing me 
     if(!listing){
@@ -84,18 +74,13 @@ router.get("/:id/edit", isLoggedin, validateListing, wrapAsync(async (req, res) 
 //Update Route - 13th step - Jaise hi user show.ejs wale edit this listing pe click krega to vo "/listings/:id/edit" route pe aajayega, is route pe use ek edit form
 //milega jiske end me ek aur edit button hoga jo form submit krne ke liye hoga. Ab jaise hi user is button pr click krega to vo "/listings/:id" route pe phuch jayega
 //matlab dobara show.ejs pe phuch jayega.
-router.put("/:id", isLoggedin, validateListing, wrapAsync(async (req, res) => {
+router.put("/:id", isLoggedin, isOwner, validateListing, wrapAsync(async (req, res) => {
     // if(!req.body.listing){
     //     throw new ExpressError(400, "Send Valid data for listing");
     // }
     let { id } = req.params;
-    let listing = await Listing.findById(id);//findbyidandupdate me id ki help se data find kiya aur ab use update krenge, aur saath hi me {
+    await Listing.findByIdAndUpdate(id, {...req.body.listing});//findbyidandupdate me id ki help se data find kiya aur ab use update krenge, aur saath hi me {
     //...req.body.listing} se saare data ko deconstruct krenge aur ek-ek krke show krenge. 
-    if(!listing.owner.equals(res.locals.currUser._id)){
-    req.flash("error", "You don't have permission to edit");
-    return res.redirect(`/listings/${id}`);
-    }
-    await Listing.findByIdAndUpdate(id, {...req.body.listing});
     req.flash("success", " listing Updated!");
     res.redirect(`/listings/${id}`);
 }));
@@ -104,7 +89,7 @@ router.put("/:id", isLoggedin, validateListing, wrapAsync(async (req, res) => {
 //create hoga jo ek form ke andar hoga aur form ke andar post method ko ham convert krenge delete me with the help of method-override.
 //Ab jaise hi user "/listings/:id" route pe aayega to use ek delete button milega aur jaise hi vo uspe click krega to vo specific id wala
 //data ya listing database aur route se delete ho jayegi.
-router.delete("/:id", isLoggedin, wrapAsync(async (req, res) => {
+router.delete("/:id", isLoggedin, isOwner, wrapAsync(async (req, res) => {
     let { id } = req.params;
     const deletedListing = await Listing.findByIdAndDelete(id);
     // console.log(deletedListing);
