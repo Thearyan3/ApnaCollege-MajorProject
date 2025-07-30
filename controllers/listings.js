@@ -54,3 +54,22 @@ module.exports.renderEditForm = async (req, res) => {
     }
     res.render("listings/edit.ejs", { listing });//ab yehi listing edit.ejs ko pass krdi aur edit.ejs render kr diya is route pe.
 }
+
+module.exports.updateListing = async (req, res) => {
+    // if(!req.body.listing){
+    //     throw new ExpressError(400, "Send Valid data for listing");
+    // }
+    let { id } = req.params;
+    await Listing.findByIdAndUpdate(id, {...req.body.listing});//findbyidandupdate me id ki help se data find kiya aur ab use update krenge, aur saath hi me {
+    //...req.body.listing} se saare data ko deconstruct krenge aur ek-ek krke show krenge. 
+    req.flash("success", " listing Updated!");
+    res.redirect(`/listings/${id}`);
+}
+
+module.exports.destroyListing = async (req, res) => {
+    let { id } = req.params;
+    const deletedListing = await Listing.findByIdAndDelete(id);
+    // console.log(deletedListing);
+        req.flash("success", "Listing Deleted!");
+    res.redirect("/listings");
+}
