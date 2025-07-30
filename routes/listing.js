@@ -34,7 +34,7 @@ router.get("/:id", wrapAsync(async (req, res) => {// Ye ek async function hoga j
         req.flash("error", "Listing you requested for does not exist");
         return res.redirect("/listings");
     }
-    console.log(listing);
+    // console.log(listing);
     res.render("listings/show.ejs", { listing });//jo data mila h use show.ejs ko pass krdenge aur show.ejs ko render kr denge is route pe.
     //Ye route isliye create kiya gya h taki 8th step wali listings me create kiye hue links par click krke jo data show hoga vo isi route ke base par hoga.
     //Aur ye route bhi "/listings/:id" pe jo get request aayegi us specific id ke data ko return krega.
@@ -63,7 +63,7 @@ router.post("/", isLoggedin, validateListing, wrapAsync(async (req, res) => {
 //method ko convert krne ke liye ek npm ka package aata h "npm i method-override".fir ise require krke use krna hota h.
 router.get("/:id/edit", isLoggedin, isOwner, validateListing, wrapAsync(async (req, res) => {
     let { id } = req.params; //Phle id extract kri
-    const listing = await Listing.findById(id);//ab us id se specific listing ka data store kr liye listing me 
+    const listing = await Listing.findById(id);//ab us id se specific listing ka data store kr liya listing me 
     if(!listing){
         req.flash("error", "Listing you requested for does not exist");
         return res.redirect("/listings");
