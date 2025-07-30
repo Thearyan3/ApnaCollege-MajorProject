@@ -9,3 +9,23 @@ module.exports.index = async (req, res) => {
     //Aur ab listings folder ke andar index.ejs ko prepare krenge jisme 2 cheeze hongi - phli sare title links jispe click krte hi user click kre hue link ke data
     //par phuch jayega (show Route pe, show.ejs pe) aur dusra ek button hoga "Create New Listing" jispe click krte hi user ek form pr phuch jayega (new Route pe, new.ejs pe)
 }
+
+module.exports.renderNewForm = (req, res) => {
+    res.render("listings/new.ejs");//Ab hamne new.ejs ke andar ek form prepare kr liya h aur use ab index.ejs ke andar ek button h "Create New Listing" jo show.ejs ke baad
+    //create krna h [steps ko dhyaan se padhna], us par click krke is form pr phuch gya h. Ab jaise hi sari info fill krke user Add pe click krega to ek POST 
+    // request "/listings" pr jayegi. Ye post request next step me create krenge. 
+}
+
+module.exports.showListing = async (req, res) => {// Ye ek async function hoga jisme request aur response ayega
+    let { id } = req.params; //aur jaise hi request /:id pe ayegi to ham use phle req.params se extract krenge aur {id} me store krenge. 
+    const listing = await Listing.findById(id).populate({path: "reviews", populate:{path: "author",},}).populate("owner");//ab isi extracted id ki help se ham listing ke data ko find krenge aur isko listing variable ke andar store kradenge. 
+    if(!listing){
+        req.flash("error", "Listing you requested for does not exist");
+        return res.redirect("/listings");
+    }
+    // console.log(listing);
+    res.render("listings/show.ejs", { listing });//jo data mila h use show.ejs ko pass krdenge aur show.ejs ko render kr denge is route pe.
+    //Ye route isliye create kiya gya h taki 8th step wali listings me create kiye hue links par click krke jo data show hoga vo isi route ke base par hoga.
+    //Aur ye route bhi "/listings/:id" pe jo get request aayegi us specific id ke data ko return krega.
+    //Vo krne ke liye hame ek show.ejs file banani padegi aur usme isi extracted data ko show krna hoga. To vo listings folder me mil jayegi.
+}

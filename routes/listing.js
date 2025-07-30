@@ -11,27 +11,11 @@ router.get("/", wrapAsync(listingController.index));
 
 //New Route - 10th step - Is step me ham get request send kr rhe honge "/listings/new" route ko jiske base pe hame ek form milega listing ko create krne ke liye.
 //Jaise hi ham form ko submit krenge vaise hi 2nd request jo jayegi vo POST request par jayegi "/listings" route par. Ye request ham next step me create krenge. 
-router.get("/new", isLoggedin, (req, res) => {
-    res.render("listings/new.ejs");//Ab hamne new.ejs ke andar ek form prepare kr liya h aur use ab index.ejs ke andar ek button h "Create New Listing" jo show.ejs ke baad
-    //create krna h [steps ko dhyaan se padhna], us par click krke is form pr phuch gya h. Ab jaise hi sari info fill krke user Add pe click krega to ek POST 
-    // request "/listings" pr jayegi. Ye post request next step me create krenge. 
-});
+router.get("/new", isLoggedin, listingController.renderNewForm);
 
 //Show Route - 9th step - Ye baat dhyaan rhe ki show route new route ke neeche hi aaye kuki router.js /new ko id samajh kr search
 //krega jo use nhi milegi.
-router.get("/:id", wrapAsync(async (req, res) => {// Ye ek async function hoga jisme request aur response ayega
-    let { id } = req.params; //aur jaise hi request /:id pe ayegi to ham use phle req.params se extract krenge aur {id} me store krenge. 
-    const listing = await Listing.findById(id).populate({path: "reviews", populate:{path: "author",},}).populate("owner");//ab isi extracted id ki help se ham listing ke data ko find krenge aur isko listing variable ke andar store kradenge. 
-    if(!listing){
-        req.flash("error", "Listing you requested for does not exist");
-        return res.redirect("/listings");
-    }
-    // console.log(listing);
-    res.render("listings/show.ejs", { listing });//jo data mila h use show.ejs ko pass krdenge aur show.ejs ko render kr denge is route pe.
-    //Ye route isliye create kiya gya h taki 8th step wali listings me create kiye hue links par click krke jo data show hoga vo isi route ke base par hoga.
-    //Aur ye route bhi "/listings/:id" pe jo get request aayegi us specific id ke data ko return krega.
-    //Vo krne ke liye hame ek show.ejs file banani padegi aur usme isi extracted data ko show krna hoga. To vo listings folder me mil jayegi.
-}));
+router.get("/:id", wrapAsync(listingController.showListing));
 
 //Create Route - 11th step - new.ejs ke andar wale add button pe click krte hi jis route pr phuchna h vo route yehi h yani create route. 
 router.post("/", isLoggedin, validateListing, wrapAsync(async (req, res) => {
