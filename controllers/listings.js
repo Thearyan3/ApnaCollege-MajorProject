@@ -29,3 +29,28 @@ module.exports.showListing = async (req, res) => {// Ye ek async function hoga j
     //Aur ye route bhi "/listings/:id" pe jo get request aayegi us specific id ke data ko return krega.
     //Vo krne ke liye hame ek show.ejs file banani padegi aur usme isi extracted data ko show krna hoga. To vo listings folder me mil jayegi.
 }
+
+module.exports.createListing = async (req, res) => {
+    // Normal way --> let {title, descripition, image, price, location, country} = req.body;
+    // Easier Way --> let listing = req.body.listing;       But we are doing it the below given way, but ye krne ke liye hamne phle new.ejs me name ko javascript object
+    //banayi h. name="title" na likhke, name="listing[title]" likh kr.
+    // if(!req.body.listing){
+    //     throw new ExpressError(400, "Send Valid data for listing");
+    // }
+    const newListing = new Listing(req.body.listing);
+    newListing.owner = req.user._id;
+    await newListing.save();//Ab jo data hamne create krke add kr liya h, use database me insert krne ke liye save() method ka use krenge. 
+    req.flash("success", "New Listing Created!");
+    res.redirect("/listings");//Aur jaise hi add button par click krenge, vaise hi sara data ek listing me insert hokar vo listing database
+    //me store ho jayegi aur index.ejs wali file matlab "/listings" route par show ho jayegi. 
+}
+
+module.exports.renderEditForm = async (req, res) => {
+    let { id } = req.params; //Phle id extract kri
+    const listing = await Listing.findById(id);//ab us id se specific listing ka data store kr liya listing me 
+    if(!listing){
+        req.flash("error", "Listing you requested for does not exist");
+        return res.redirect("/listings");
+    }
+    res.render("listings/edit.ejs", { listing });//ab yehi listing edit.ejs ko pass krdi aur edit.ejs render kr diya is route pe.
+}
