@@ -8,7 +8,10 @@ const listingController = require("../controllers/listings.js");
 
 router.route("/")
 .get(wrapAsync(listingController.index))
-.post(isLoggedin, validateListing, wrapAsync(listingController.createListing));
+.post((req, res) => {
+    res.send(req.body);
+});
+// .post(isLoggedin, validateListing, wrapAsync(listingController.createListing));
 
 //New Route - 10th step - Is step me ham get request send kr rhe honge "/listings/new" route ko jiske base pe hame ek form milega listing ko create krne ke liye.
 //Jaise hi ham form ko submit krenge vaise hi 2nd request jo jayegi vo POST request par jayegi "/listings" route par. Ye request ham next step me create krenge. 
