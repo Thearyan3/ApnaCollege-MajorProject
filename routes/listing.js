@@ -6,13 +6,13 @@ const { isLoggedin, isOwner, validateListing } = require("../middleware.js");
 
 const listingController = require("../controllers/listings.js");
 const multer = require("multer")
-const upload = multer({dest: "/uploads"});
+const upload = multer({dest: "uploads/"});
 
 router.route("/")
 .get(wrapAsync(listingController.index))
 // .post(isLoggedin, validateListing, wrapAsync(listingController.createListing));
-.post((req, res) => {
-    res.send(req.body);
+.post(upload.single("listing[image]"), (req, res) => {
+    res.send(req.file);
 });
 
 //New Route - 10th step - Is step me ham get request send kr rhe honge "/listings/new" route ko jiske base pe hame ek form milega listing ko create krne ke liye.
