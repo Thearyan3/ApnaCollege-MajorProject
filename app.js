@@ -1,6 +1,6 @@
-
-
-
+if(process.env.NODE_ENV != "production"){
+require("dotenv").config();
+}
 
 const express = require("express");// 1st Step - express package ko require krenge
 const app = express();// 1st Step
