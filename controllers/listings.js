@@ -38,6 +38,10 @@ module.exports.createListing = async (req, res) => {
     //     throw new ExpressError(400, "Send Valid data for listing");
     // }
     const newListing = new Listing(req.body.listing);
+     // Set the image field if a file was uploaded
+    if (req.file) {
+        newListing.image = req.file.path; // 'path' contains the image URL from Cloudinary
+    }
     newListing.owner = req.user._id;
     await newListing.save();//Ab jo data hamne create krke add kr liya h, use database me insert krne ke liye save() method ka use krenge. 
     req.flash("success", "New Listing Created!");

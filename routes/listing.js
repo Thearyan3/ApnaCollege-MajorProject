@@ -11,10 +11,30 @@ const upload = multer({ storage });
 
 router.route("/")
 .get(wrapAsync(listingController.index))
-// .post(isLoggedin, validateListing, wrapAsync(listingController.createListing));
-.post(upload.single("listing[image]"), (req, res) => {
-    res.send(req.file);
-});
+.post(isLoggedin, upload.single("image"), validateListing, wrapAsync(listingController.createListing));
+// .post(upload.single("image"), (req, res) => {
+//     // res.send(req.file);
+// });
+
+// router.get("/test-upload", (req, res) => {
+//   res.render("test");
+// });
+
+// router.post("/test-upload", upload.single("image"), (req, res) => {
+//   console.log("Uploaded file:", req.file);
+
+//   if (!req.file) {
+//     return res.status(400).send("No file uploaded.");
+//   }
+
+//   // Send back image URL for confirmation
+//   res.send(`
+//     <h2>Upload successful!</h2>
+//     <p>Image URL:</p>
+//     <a href="${req.file.path}" target="_blank">${req.file.path}</a><br>
+//     <img src="${req.file.path}" alt="Uploaded Image" style="max-width: 300px; margin-top: 10px;" />
+//   `);
+// });
 
 //New Route - 10th step - Is step me ham get request send kr rhe honge "/listings/new" route ko jiske base pe hame ek form milega listing ko create krne ke liye.
 //Jaise hi ham form ko submit krenge vaise hi 2nd request jo jayegi vo POST request par jayegi "/listings" route par. Ye request ham next step me create krenge. 
