@@ -2,6 +2,7 @@
 //skta h. Yehi data fir hamare Wanderlust naam ke database me jaayega aur listings naam ki collection/model ke andar 
 //ham isko store krenge. lekin phle isko bhi listing.js ke Schema aur model ki tareeke se export krenge index.js me.
 //Aur vha pe isko require krenge.
+
 const sampleListings = [
   {
     title: "Cozy Beachfront Cottage",
@@ -353,6 +354,7 @@ const sampleListings = [
   },
 ];
 
-module.exports = { data: sampleListings };// sare data ko (key:value) ke pair me bhejenge, reason to nhi pata. But 
+module.exports = { data: sampleListings };
+// sare data ko (key:value) ke pair me bhejenge, reason to nhi pata. But 
 //fir index.js me isko insert krate time as a key access krenge jaise ham kisi object ki key ko krte h. {object.key}
 // ke jaise. 
