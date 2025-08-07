@@ -1,5 +1,3 @@
-let mapToken = mapToken;
-console.log(mapToken);
 mapboxgl.accessToken = mapToken;
 const map = new mapboxgl.Map({
     container: 'map', // container ID
