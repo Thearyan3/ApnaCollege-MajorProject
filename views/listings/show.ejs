@@ -37,8 +37,8 @@
 
 
                 <div class="col-8 offset-3 mb-3">
-                    <hr>
                     <%if(currUser){%>
+                        <hr>
                         <h3>Leave a Review</h3>
                         <form action="/listings/<%= listing.id %>/reviews" method="POST" novalidate
                             class="needs-validation">
@@ -72,26 +72,29 @@
                         <hr />
                         <%}%>
 
-                            <p><b>All Reviews</b></p>
-                            <div class="row">
-                                <%for(review of listing.reviews){ %>
-                                    <div class="card col-5 ms-3 mb-3">
-                                        <div class="card-body">
-                                            <h5 class="card-title">@<%= review.author.username %>
-                                            </h5>
-                                            <p class="starability-result card-text" data-rating="<%= review.rating %>">
-                                            </p>
-                                            <p class="card-text">
-                                                <%= review.comment %>
-                                            </p>
-                                            <form class="mb-3" method="POST"
-                                                action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE">
-                                                <button class="btn btn-sm btn-dark">delete</button>
-                                            </form>
+                            <% if(listing.reviews.length> 0) {%>
+                                <div class="row">
+                                    <p><b>All Reviews</b></p>
+                                    <%for(review of listing.reviews){ %>
+                                        <div class="card col-5 ms-3 mb-3">
+                                            <div class="card-body">
+                                                <h5 class="card-title">@<%= review.author.username %>
+                                                </h5>
+                                                <p class="starability-result card-text"
+                                                    data-rating="<%= review.rating %>">
+                                                </p>
+                                                <p class="card-text">
+                                                    <%= review.comment %>
+                                                </p>
+                                                <form class="mb-3" method="POST"
+                                                    action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE">
+                                                    <button class="btn btn-sm btn-dark">delete</button>
+                                                </form>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <% } %>
-                            </div>
+                                        <% } %>
+                                </div>
+                                <% } %>
 
                 </div>
 
@@ -100,6 +103,18 @@
                     <div id="map"></div>
                 </div>
     </div>
+
+
+    <script>
+        let mapToken = "<%= process.env.MAP_TOKEN %>";
+        console.log(mapToken);
+        mapboxgl.accessToken = mapToken;
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            center: [77.2088, 28.6139], // starting position [lng, lat]. Note that lat must be set between -90 and 90
+            zoom: 9 // starting zoom
+        });
+    </script>
     <br><br><br>
 
 
