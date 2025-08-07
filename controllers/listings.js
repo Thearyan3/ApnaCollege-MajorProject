@@ -18,8 +18,8 @@ module.exports.renderNewForm = (req, res) => {
 
 module.exports.showListing = async (req, res) => {// Ye ek async function hoga jisme request aur response ayega
     let { id } = req.params; //aur jaise hi request /:id pe ayegi to ham use phle req.params se extract krenge aur {id} me store krenge. 
-    const listing = await Listing.findById(id).populate({path: "reviews", populate:{path: "author",},}).populate("owner");//ab isi extracted id ki help se ham listing ke data ko find krenge aur isko listing variable ke andar store kradenge. 
-    if(!listing){
+    const listing = await Listing.findById(id).populate({ path: "reviews", populate: { path: "author", }, }).populate("owner");//ab isi extracted id ki help se ham listing ke data ko find krenge aur isko listing variable ke andar store kradenge. 
+    if (!listing) {
         req.flash("error", "Listing you requested for does not exist");
         return res.redirect("/listings");
     }
@@ -42,7 +42,7 @@ module.exports.createListing = async (req, res, next) => {
 
     const newListing = new Listing(req.body.listing);
     newListing.owner = req.user._id;
-    newListing.image = {url, filename};
+    newListing.image = { url, filename };
     await newListing.save();//Ab jo data hamne create krke add kr liya h, use database me insert krne ke liye save() method ka use krenge. 
     req.flash("success", "New Listing Created!");
     res.redirect("/listings");//Aur jaise hi add button par click krenge, vaise hi sara data ek listing me insert hokar vo listing database
@@ -52,7 +52,7 @@ module.exports.createListing = async (req, res, next) => {
 module.exports.renderEditForm = async (req, res) => {
     let { id } = req.params; //Phle id extract kri
     const listing = await Listing.findById(id);//ab us id se specific listing ka data store kr liya listing me 
-    if(!listing){
+    if (!listing) {
         req.flash("error", "Listing you requested for does not exist");
         return res.redirect("/listings");
     }
@@ -64,8 +64,15 @@ module.exports.updateListing = async (req, res) => {
     //     throw new ExpressError(400, "Send Valid data for listing");
     // }
     let { id } = req.params;
-    await Listing.findByIdAndUpdate(id, {...req.body.listing});//findbyidandupdate me id ki help se data find kiya aur ab use update krenge, aur saath hi me {
+    let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });//findbyidandupdate me id ki help se data find kiya aur ab use update krenge, aur saath hi me {
     //...req.body.listing} se saare data ko deconstruct krenge aur ek-ek krke show krenge. 
+
+    if (typeof req.file !== "undefined") {
+        let url = req.file.path;
+        let filename = req.file.filename;
+        listing.image = { url, filename };
+        await listing.save();
+    }
     req.flash("success", " listing Updated!");
     res.redirect(`/listings/${id}`);
 }
@@ -74,6 +81,6 @@ module.exports.destroyListing = async (req, res) => {
     let { id } = req.params;
     const deletedListing = await Listing.findByIdAndDelete(id);
     // console.log(deletedListing);
-        req.flash("success", "Listing Deleted!");
+    req.flash("success", "Listing Deleted!");
     res.redirect("/listings");
 }
