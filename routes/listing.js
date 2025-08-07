@@ -39,7 +39,7 @@ router.get("/new", isLoggedin, listingController.renderNewForm);
 
 router.route("/:id")
 .get(wrapAsync(listingController.showListing))
-.put(isLoggedin, isOwner, validateListing, wrapAsync(listingController.updateListing))
+.put(isLoggedin, isOwner, upload.single("image"), validateListing, wrapAsync(listingController.updateListing))
 .delete(isLoggedin, isOwner, wrapAsync(listingController.destroyListing));
 
 //Index Route
