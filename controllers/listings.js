@@ -57,7 +57,7 @@ module.exports.renderEditForm = async (req, res) => {
         return res.redirect("/listings");
     }
     let originalImageUrl = listing.image.url;
-    originalImageUrl = originalImageUrl.replace("/upload", "/upload/h_300,w_250");
+    originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250");
     res.render("listings/edit.ejs", { listing, originalImageUrl });//ab yehi listing edit.ejs ko pass krdi aur edit.ejs render kr diya is route pe.
 }
 
