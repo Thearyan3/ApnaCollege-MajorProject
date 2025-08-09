@@ -42,11 +42,11 @@ module.exports.createListing = async (req, res, next) => {
     // }
 
     let response = await geocodingClient.forwardGeocode({
-        query: 'New Delhi, India',
+        query: req.body.listing.location,
         limit: 1,
     }).send();
 
-    console.log(response);
+    console.log(response.body.features[0].geometry);
     res.send("Done");
 
     let url = req.file.path;
