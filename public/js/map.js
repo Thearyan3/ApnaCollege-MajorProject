@@ -6,5 +6,5 @@ const map = new mapboxgl.Map({
 });
 
 const marker1 = new mapboxgl.Marker()
-    .setLngLat([12.554729, 55.70651])
+    .setLngLat(coordinates)
     .addTo(map);
