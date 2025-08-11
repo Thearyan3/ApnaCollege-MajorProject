@@ -78,10 +78,10 @@ const sessionOptions = {
     }
 }
 
-app.get("/", (req, res) => {
-    res.send("Hi, I am root");// 3rd step [get request ke liye "/" route banayenge aur uspe response send krenge 
-    // (res.send) ke help se aur check krenge ki hamara route work kr rha h ya nhi]
-});
+// app.get("/", (req, res) => {
+//     res.send("Hi, I am root");// 3rd step [get request ke liye "/" route banayenge aur uspe response send krenge 
+//     // (res.send) ke help se aur check krenge ki hamara route work kr rha h ya nhi]
+// });
 
 app.use(session(sessionOptions));
 app.use(flash());
