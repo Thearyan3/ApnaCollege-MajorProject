@@ -21,11 +21,14 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";// 4th step[IIIrd step for 4th step- ye bas ek URL h, jo
+// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+// 4th step[IIIrd step for 4th step- ye bas ek URL h, jo
 // mongoose.connect me likhna hota h ye batane ke liye ki kisko kisse connect krna h. Yaha pe hamne isko ek variable
 // me store kr diya aur uske baad usi variable ko mongoose.connect me likh diya h. Ham chahe to ye step skip krke 
 //directly URL ko mongoose.connect() me bhi likh skte h. Is URL ka Basic matlab h ki ("mongodb") ko connect krna h
 //, ("127.0.0.1:27017") se aur mongodb ke andar database ka naam hoga ("Wanderlust").]
+const dbUrl = process.env.ATLASDB_URL;
+
 
 main()//IInd step for 4th step - main() function ko callback krenge, usko execute krne ke liye. Ye function ko create
     //krne ke baad, II step hota h use execute krne ke liye. aur kuki ye promise return krega to ham ispe then() method
@@ -39,7 +42,7 @@ main()//IInd step for 4th step - main() function ko callback krenge, usko execut
         console.log(err);//Agar koi (err) ayega to use console kradenge [console.log(err)] se. 
     });
 async function main() {
-    await mongoose.connect(MONGO_URL);//4th step [Ist step for 4th step - mongoDB ko express ya JS se connect krenge
+    await mongoose.connect(dbUrl);//4th step [Ist step for 4th step - mongoDB ko express ya JS se connect krenge
     // mongoose.connect method se (ye ek mongoose ka method h), aur kuki ye method promise return krta h isiliye 
     //isko await kr denge aur main() naam ke function ke andar isko rakhenge aur function ko async kr denge. Yehi iska 
     //syntax h.(mongoosejs.com website pe jake check kr skte h). Promise ek aisi cheez hoti h jo code ki timeline ke 
