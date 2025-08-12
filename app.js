@@ -12,6 +12,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");//15th step - Helps to create common templates or layout like Navbars, footers etc.
 const ExpressError = require("./utils/ExpressError.js");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -70,7 +71,20 @@ app.engine("ejs", ejsMate);//15th step - yha pe ejs ke liye engine define kiya j
 //16th step - To create a layouts folder inside views folder. For more info go to layouts folder.
 app.use(express.static(path.join(__dirname, "/public")));//to use static files like CSS.
 
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    crypto:{
+        secret: "mysecretsuperstring",
+    },
+    touchAfter: 24 * 3600,
+});
+
+store.on("error", ()=> {
+    console.log("ERROR in MONGO SESSION STORE", err);
+});
+
 const sessionOptions = {
+    store,
     secret: "mysecretsuperstring", 
     resave: false, 
     saveUninitialized: true,
