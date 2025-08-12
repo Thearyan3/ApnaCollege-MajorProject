@@ -74,7 +74,7 @@ app.use(express.static(path.join(__dirname, "/public")));//to use static files l
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     crypto:{
-        secret: "mysecretsuperstring",
+        secret: process.env.SECRET,
     },
     touchAfter: 24 * 3600,
 });
@@ -85,7 +85,7 @@ store.on("error", ()=> {
 
 const sessionOptions = {
     store,
-    secret: "mysecretsuperstring", 
+    secret: process.env.SECRET, 
     resave: false, 
     saveUninitialized: true,
     cookie: {
